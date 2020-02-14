@@ -1,0 +1,8 @@
+real num1, num2
+begin
+   get num1
+   get num2
+
+   put num1+num2
+   put num1 * num2
+end

@@ -1,0 +1,26 @@
+int i, n
+int factorial
+string name
+uint lol
+
+begin
+	get n
+	let factorial=1
+	for i = 1 to n do
+		let factorial = factorial * i
+	put factorial
+
+	int test
+	let test = factorial / 34 * 123 + test - n
+	put test
+
+	let i = 432538945
+
+	real t
+	let t = 234.122
+
+	let lol = -4539
+	let lol = -12341.123154
+
+	let name = "Hello"
+end

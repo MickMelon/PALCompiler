@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Assessment": {
+      "commandName": "Project",
+      "commandLineArgs": "G:\\_Compilers\\CompilersProject\\Assessment\\Programs\\syntax-errors\\rvalueAssignment.txt"
+    }
+  }
+}

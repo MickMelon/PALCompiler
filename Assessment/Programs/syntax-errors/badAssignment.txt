@@ -1,0 +1,5 @@
+PROGRAM factorial
+WITH i, AS INTEGER
+IN
+    i := 3
+END

@@ -1,0 +1,5 @@
+int x,y
+begin
+   let x = 1 + 2
+   let y := 1 + 2
+end

@@ -1,0 +1,6 @@
+PROGRAM SyntaxVar
+WITH
+    a, b AS REAL
+IN
+    a + b = 123.0
+END

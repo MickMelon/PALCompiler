@@ -1,0 +1,11 @@
+G:\_Compilers\CompilersProject\PALCompiler\bin\Debug\PALCompiler.exe.config
+G:\_Compilers\CompilersProject\PALCompiler\bin\Debug\PALCompiler.exe
+G:\_Compilers\CompilersProject\PALCompiler\bin\Debug\PALCompiler.pdb
+G:\_Compilers\CompilersProject\PALCompiler\bin\Debug\Ardkit.dll
+G:\_Compilers\CompilersProject\PALCompiler\obj\Debug\PALCompiler.csprojAssemblyReference.cache
+G:\_Compilers\CompilersProject\PALCompiler\obj\Debug\PALCompiler.csproj.CopyComplete
+G:\_Compilers\CompilersProject\PALCompiler\obj\Debug\PALCompiler.exe
+G:\_Compilers\CompilersProject\PALCompiler\obj\Debug\PALCompiler.pdb
+G:\_Compilers\CompilersProject\out\PALCompiler.exe.config
+G:\_Compilers\CompilersProject\out\PALCompiler.exe
+G:\_Compilers\CompilersProject\out\PALCompiler.pdb

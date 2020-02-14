@@ -1,0 +1,7 @@
+PROGRAM InvalidExpression
+WITH
+    a AS INTEGER
+IN
+    a = 5 +++++++++++++++++ 5
+    OUTPUT a --- 5
+END

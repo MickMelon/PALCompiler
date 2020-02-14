@@ -1,0 +1,8 @@
+int i
+real x,y,x
+real i
+begin
+let i := a + 32.4
+let z := 2
+let x := 5.5 * i + 1.0 / 5
+end

@@ -1,0 +1,8 @@
+PROGRAM UnaryOperators
+WITH
+    a, b AS INTEGER
+IN
+    a = 5 + +5
+    b = -a * -1
+    OUTPUT a / -5
+END

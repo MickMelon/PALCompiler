@@ -1,0 +1,6 @@
+PROGRAM DivideByZero
+WITH
+    a AS INTEGER
+IN
+    a = 5 / 0
+END

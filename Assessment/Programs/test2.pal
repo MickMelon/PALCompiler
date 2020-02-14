@@ -1,0 +1,5 @@
+﻿PROGRAM EmptyDeclarations
+WITH
+IN
+    OUTPUT 5 + 5
+END

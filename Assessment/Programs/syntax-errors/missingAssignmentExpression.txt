@@ -1,0 +1,7 @@
+PROGRAM program
+WITH
+	a, b AS INTEGER
+IN
+    a = 5
+    b = 
+END

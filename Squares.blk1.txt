@@ -1,0 +1,9 @@
+int i,n,square
+begin
+get n
+for i:=1 to n do
+   begin
+   let square := i * i
+   put square
+   end
+end

@@ -1,0 +1,11 @@
+int a,i,x,y
+begin
+   let x := 1 + 2
+   for i:=1 to 5 do
+   begin
+      get 7
+      let a:=1
+      x := 2
+      let y  := 3
+   end
+end

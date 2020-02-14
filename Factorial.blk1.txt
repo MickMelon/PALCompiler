@@ -1,0 +1,8 @@
+int i, n
+int factorial
+begin	get n
+	let factorial := 1
+	for i:=1 to n do
+		let factorial := factorial * i
+	put factorial
+end
