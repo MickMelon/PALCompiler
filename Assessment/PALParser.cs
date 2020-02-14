@@ -1,4 +1,5 @@
 ﻿using AllanMilne.Ardkit;
+using Assessment.Errors;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,10 @@ namespace Assessment
             recVarDecls();
 
             mustBe("IN");
-            recStatements();
+            if (!haveStatement())
+                syntaxError(new MissingStatementsError(scanner.CurrentToken));
+            else
+                recStatements();
 
             mustBe("END");
         }
@@ -87,8 +91,10 @@ namespace Assessment
         {
             if (have("REAL"))
                 mustBe("REAL");
-            else
+            else if (have("INTEGER"))
                 mustBe("INTEGER");
+            else
+                syntaxError(new InvalidTypeError(scanner.CurrentToken));
         }
 
         /// <summary>
@@ -160,8 +166,7 @@ namespace Assessment
             // error in the syntax.
             else
             {
-                syntaxError($"Invalid ting specified {scanner.CurrentToken.ToString()}");
-                
+                syntaxError(new InvalidStatementError(scanner.CurrentToken));
             }
 
         }
@@ -258,8 +263,10 @@ namespace Assessment
                 mustBe("<");
             else if (have("="))
                 mustBe("=");
-            else
+            else if (have(">"))
                 mustBe(">");
+            else
+                syntaxError(new InvalidBooleanExprError(scanner.CurrentToken));
 
             recExpression();
         }
@@ -280,13 +287,11 @@ namespace Assessment
                     mustBe("+");
                     recTerm();
                 }
-                else if (have("-"))
+                else
                 {
                     mustBe("-");
                     recTerm();
                 }
-                else
-                    syntaxError("WTF");
             }          
         }
 
@@ -306,7 +311,7 @@ namespace Assessment
                     mustBe("*");
                     recFactor();
                 }
-                else if (have("/"))
+                else
                 {
                     mustBe("/");
                     recFactor();
@@ -337,7 +342,7 @@ namespace Assessment
                 mustBe(")");
             }
             else
-                syntaxError("wtf mate");
+                syntaxError(new InvalidFactorError(scanner.CurrentToken));
         }
 
         /// <summary>
@@ -361,6 +366,12 @@ namespace Assessment
         private bool haveValue()
         {
             return have(Token.IdentifierToken) || have(Token.IntegerToken) || have(Token.RealToken);
+        }
+
+        private void syntaxError(ICompilerError error)
+        {
+            if (IsRecovering) return;
+            Errors.Add(error);
         }
     }
 }
