@@ -28,10 +28,7 @@ namespace Assessment
             var parser = new PALParser(new PALScanner());
             parser.Parse(streamReader);
 
-            foreach (var error in parser.Errors)
-            {
-                Console.WriteLine(error.ToString());
-            }
+            parser.Errors.ForEach(e => Console.WriteLine(e.ToString()));
         }
     }
 }

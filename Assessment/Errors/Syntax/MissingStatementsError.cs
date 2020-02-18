@@ -1,6 +1,6 @@
 ﻿using AllanMilne.Ardkit;
 
-namespace Assessment.Errors
+namespace Assessment.Errors.Syntax
 {
     public class MissingStatementsError : CompilerError
     {
@@ -9,6 +9,6 @@ namespace Assessment.Errors
         }
 
         public override string ToString()
-            => $"{base.ToString()} Missing statement(s) between 'IN' and 'END'";
+            => $"{base.ToString()} Missing statement(s) between 'IN' and 'END'.";
     }
 }

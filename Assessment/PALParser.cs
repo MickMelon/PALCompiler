@@ -1,12 +1,17 @@
 ﻿using AllanMilne.Ardkit;
 using Assessment.Errors;
+using Assessment.Errors.Syntax;
+using System.Collections.Generic;
 
 namespace Assessment
 {
     public class PALParser : RecoveringRdParser
     {
+        private PALSemantics semantics;
+
         public PALParser(IScanner scan) : base(scan)
         {
+            semantics = new PALSemantics(this);
         }
 
         /// <summary>
@@ -19,19 +24,23 @@ namespace Assessment
         /// </summary>
         protected override void recStarter()
         {
+            Scope.OpenScope();
+
             mustBe("PROGRAM");
-            recIdentifier();
+            mustBe(Token.IdentifierToken);
 
             mustBe("WITH");
-            recVarDecls();
+            RecVarDecls();
 
             mustBe("IN");
-            if (!haveStatement())
+            if (!HaveStatement())
                 syntaxError(new MissingStatementsError(scanner.CurrentToken));
             else
-                recStatements();
+                RecStatements();
 
             mustBe("END");
+
+            Scope.CloseScope();
         }
 
         /// <summary>
@@ -39,14 +48,15 @@ namespace Assessment
         /// <VarDecls> ::= (<IdentList> AS <Type>)* ;
         /// 
         /// </summary>
-        private void recVarDecls()
+        private void RecVarDecls()
         {
-            // Var declarations will continue until "IN" is found
+            // Var declarations will continue while there are identifiers
             while (have(Token.IdentifierToken))
             {
-                recIdentList();
+                var identifiers = RecIdentList();
                 mustBe("AS");
-                recType();
+                var type = RecType();
+                identifiers.ForEach(i => semantics.DeclareIdentifier(i, type));
             }            
         }
 
@@ -55,27 +65,24 @@ namespace Assessment
         /// <IdentList> ::= Identifier ( , Identifier)* ;
         /// 
         /// </summary>
-        private void recIdentList()
+        private List<IToken> RecIdentList()
         {
+            var identifiers = new List<IToken>();
+
             // There must be at least one identifier
-            recIdentifier();
+            identifiers.Add(scanner.CurrentToken);
+            mustBe(Token.IdentifierToken);
+            
 
             // If there is a comma, then there must be more identifiers specified
             while (have(","))
             {
                 mustBe(",");
-                recIdentifier();
+                identifiers.Add(scanner.CurrentToken);
+                mustBe(Token.IdentifierToken);                
             }
-        }
 
-        /// <summary>
-        /// 
-        /// Identifier
-        /// 
-        /// </summary>
-        private void recIdentifier()
-        {
-            mustBe(Token.IdentifierToken);
+            return identifiers;
         }
 
         /// <summary>
@@ -83,20 +90,28 @@ namespace Assessment
         /// <Type> ::= REAL | INTEGER ;
         /// 
         /// </summary>
-        private void recType()
+        private int RecType()
         {
             if (have("REAL"))
+            {
                 mustBe("REAL");
-            else if (have("INTEGER"))
+                return LanguageType.Real;
+            }
+                
+            if (have("INTEGER"))
+            {
                 mustBe("INTEGER");
-            else
-                syntaxError(new InvalidTypeError(scanner.CurrentToken));
+                return LanguageType.Integer;
+            }
+                
+            syntaxError(new InvalidTypeError(scanner.CurrentToken));
+            return LanguageType.Undefined;
         }
 
         /// <summary>
         /// Keeps reading statements until there is none left.
         /// </summary>
-        private void recStatements()
+        private void RecStatements()
         {
             // If any of the below tokens are found, then
             // the statement list must've ended.
@@ -108,17 +123,16 @@ namespace Assessment
                    !have(Token.InvalidChar) &&
                    !have(Token.InvalidToken))
             {
-                // Console.WriteLine($"Current token is {scanner.CurrentToken.ToString()}");
                 // Parse assignment
-                if (!haveStatement()) break;
-                recStatement();
+                if (!HaveStatement()) break;
+                RecStatement();
             }
         }
 
         /// <summary>
         /// Checks if we current token is a valid statement
         /// </summary>
-        private bool haveStatement()
+        private bool HaveStatement()
         {
             return have(Token.IdentifierToken) ||
                    have("UNTIL") ||
@@ -132,30 +146,29 @@ namespace Assessment
         /// <Statement> ::= <Assignment> | <Loop> | <Conditional> | <I-o> ;
         /// 
         /// </summary>
-        private void recStatement()
+        private void RecStatement()
         {
-            // Console.WriteLine($"rec Token is {scanner.CurrentToken.ToString()}");
             if (have(Token.IdentifierToken))
             {
-                recAssignment();
+                RecAssignment();
             }
 
             // Parse loop
             else if (have("UNTIL"))
             {
-                recLoop();
+                RecLoop();
             }
 
             // Parse conditional
             else if (have("IF"))
             {
-                recConditional();
+                RecConditional();
             }
 
             // Parse IO
             else if (have("INPUT") || have("OUTPUT"))
             {
-                recIo();
+                RecIo();
             }
 
             // Must be one of the above, if not then there is an
@@ -172,11 +185,12 @@ namespace Assessment
         /// <Assignment> ::= Identifier = <Expression> ;
         /// 
         /// </summary>
-        private void recAssignment()
+        private void RecAssignment()
         {
-            recIdentifier();
+            var type = semantics.CheckIdentifier(scanner.CurrentToken);
+            mustBe(Token.IdentifierToken);
             mustBe("=");
-            recExpression();
+            RecExpression();
         }
 
         /// <summary>
@@ -184,12 +198,12 @@ namespace Assessment
         /// <Loop> ::= UNTIL <BooleanExpr> REPEAT (<Statement>)* ENDLOOP ;
         /// 
         /// </summary>
-        private void recLoop()
+        private void RecLoop()
         {
             mustBe("UNTIL");
-            recBooleanExpr();
+            RecBooleanExpr();
             mustBe("REPEAT");
-            recStatements();
+            RecStatements();
             mustBe("ENDLOOP");
         }
 
@@ -200,17 +214,17 @@ namespace Assessment
         ///                       ENDIF ;
         /// 
         /// </summary>
-        private void recConditional()
+        private void RecConditional()
         {
             mustBe("IF");
-            recBooleanExpr();
+            RecBooleanExpr();
             mustBe("THEN");
-            recStatements();
+            RecStatements();
             
             if (have("ELSE"))
             {
                 mustBe("ELSE");
-                recStatements();
+                RecStatements();
             }
 
             mustBe("ENDIF");
@@ -222,26 +236,26 @@ namespace Assessment
         ///           OUTPUT <Expression> ( , <Expression>)* ;
         /// 
         /// </summary>
-        private void recIo()
+        private void RecIo()
         {
             if (have("INPUT"))
             {
                 mustBe("INPUT");
-                recIdentList();
+                RecIdentList();
             }
             else
             {
                 mustBe("OUTPUT");
 
                 // Must be at least one expression.
-                recExpression();
+                RecExpression();
 
                 // If there is a comma, there must be at least
                 // one more expression.
                 while (have(","))
                 {
                     mustBe(",");
-                    recExpression();
+                    RecExpression();
                 }
             }
         }
@@ -251,9 +265,9 @@ namespace Assessment
         /// <BooleanExpr> ::= <Expression> ("<" | "=" | ">") <Expression> ;
         /// 
         /// </summary>
-        private void recBooleanExpr()
+        private void RecBooleanExpr()
         {
-            recExpression();
+            RecExpression();
 
             if (have("<"))
                 mustBe("<");
@@ -264,7 +278,7 @@ namespace Assessment
             else
                 syntaxError(new InvalidBooleanExprError(scanner.CurrentToken));
 
-            recExpression();
+            RecExpression();
         }
 
         /// <summary>
@@ -272,23 +286,28 @@ namespace Assessment
         /// <Expression> ::= <Term> ( (+|-) <Term>)* ;
         /// 
         /// </summary>
-        private void recExpression()
+        private int RecExpression()
         {
-            recTerm();
+            int leftType, rightType;
+            IToken leftToken, rightToken;
+
+            leftToken = scanner.CurrentToken;
+            leftType = RecTerm();
 
             while (have("+") || have("-"))
             {
                 if (have("+"))
-                {
                     mustBe("+");
-                    recTerm();
-                }
                 else
-                {
                     mustBe("-");
-                    recTerm();
-                }
-            }          
+
+                rightToken = scanner.CurrentToken;
+                rightType = RecTerm();
+
+                semantics.VerifyType(rightToken, rightType, leftType);
+            }
+
+            return leftType;
         }
 
         /// <summary>
@@ -296,23 +315,31 @@ namespace Assessment
         /// <Term> ::= <Factor> ( (*|/) <Factor>)* ;
         /// 
         /// </summary>
-        private void recTerm()
+        private int RecTerm()
         {
-            recFactor();
-
+            int leftType, rightType;
+            IToken token;
+            leftType = RecFactor();
+            
             while (have("*") || have("/"))
             {
                 if (have("*"))
                 {
                     mustBe("*");
-                    recFactor();
+                    token = scanner.CurrentToken;
+                    rightType = RecFactor();
                 }
                 else
                 {
                     mustBe("/");
-                    recFactor();
+                    token = scanner.CurrentToken;
+                    rightType = RecFactor();
                 }
-            }            
+
+                semantics.VerifyType(token, leftType, rightType);
+            }
+
+            return leftType;
         }
 
         /// <summary>
@@ -320,25 +347,29 @@ namespace Assessment
         /// <Factor> ::= (+|-)? ( <Value> | "(" <Expression> ")" ) ;
         /// 
         /// </summary>
-        private void recFactor()
+        private int RecFactor()
         {
+            var type = LanguageType.Undefined;
+
             if (have("+"))
                 mustBe("+");
             else if (have("-"))
                 mustBe("-");
 
-            if (haveValue())
+            if (HaveValue())
             {
-                recValue();
+                type = RecValue();
             }
             else if (have("("))
             {
                 mustBe("(");
-                recExpression();
+                type = RecExpression();
                 mustBe(")");
             }
             else
                 syntaxError(new InvalidFactorError(scanner.CurrentToken));
+
+            return type;
         }
 
         /// <summary>
@@ -346,20 +377,36 @@ namespace Assessment
         /// <Value> ::= Identifier | IntegerValue | RealValue ;
         /// 
         /// </summary>
-        private void recValue()
+        private int RecValue()
         {
             if (have(Token.IdentifierToken))
+            {
+                int type = semantics.CheckIdentifier(scanner.CurrentToken);
                 mustBe(Token.IdentifierToken);
-            else if (have(Token.IntegerToken))
+                return type;
+            }
+
+            if (have(Token.IntegerToken))
+            {
                 mustBe(Token.IntegerToken);
-            else
+                return LanguageType.Integer;
+            }
+                
+            
+            if (have(Token.RealToken))
+            {
                 mustBe(Token.RealToken);
+                return LanguageType.Real;
+            }
+
+            syntaxError(new InvalidValueError(scanner.CurrentToken));
+            return LanguageType.Undefined;
         }
 
         /// <summary>
         /// Checks if we have an identifier, integer, or real token.
         /// </summary>
-        private bool haveValue()
+        private bool HaveValue()
         {
             return have(Token.IdentifierToken) || have(Token.IntegerToken) || have(Token.RealToken);
         }

@@ -1,9 +1,6 @@
 ﻿using AllanMilne.Ardkit;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Assessment.Errors
+namespace Assessment.Errors.Syntax
 {
     public class InvalidFactorError : CompilerError
     {
@@ -12,6 +9,6 @@ namespace Assessment.Errors
         }
 
         public override string ToString()
-            => $"{base.ToString()} Expected factor but found {token.TokenValue}";
+            => $"{base.ToString()} '{token.TokenValue}' found where factor expected.";
     }
 }
