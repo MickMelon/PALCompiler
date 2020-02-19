@@ -189,10 +189,12 @@ namespace Assessment
         /// </summary>
         private void RecAssignment()
         {
-            semantics.CheckIdentifier(scanner.CurrentToken);
+            var identifier = scanner.CurrentToken;
+            var identifierType = semantics.CheckIdentifier(scanner.CurrentToken);
             mustBe(Token.IdentifierToken);
             mustBe("=");
-            RecExpression();
+            var expressionType = RecExpression();
+            semantics.VerifyType(identifier, identifierType, expressionType);
         }
 
         /// <summary>
