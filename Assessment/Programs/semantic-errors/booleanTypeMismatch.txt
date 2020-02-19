@@ -8,6 +8,9 @@ IN
             IF i = (5.0 * k + 2.0) THEN
                 OUTPUT i
             ENDIF
+            IF k = 5 THEN
+                OUTPUT i + 25
+            ENDIF
         ENDLOOP
     ENDLOOP
 END

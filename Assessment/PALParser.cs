@@ -73,8 +73,7 @@ namespace Assessment
 
             // There must be at least one identifier
             identifiers.Add(scanner.CurrentToken);
-            mustBe(Token.IdentifierToken);
-            
+            mustBe(Token.IdentifierToken);            
 
             // If there is a comma, then there must be more identifiers specified
             while (have(","))

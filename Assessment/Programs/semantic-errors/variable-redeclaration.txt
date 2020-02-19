@@ -3,6 +3,7 @@ WITH
     i, n, factorial AS INTEGER
     test AS INTEGER
     test, test2, test2 AS REAL
+    test AS INTEGER
 IN
     INPUT i
     n = 1

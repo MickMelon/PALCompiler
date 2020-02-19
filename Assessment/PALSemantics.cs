@@ -9,22 +9,39 @@ namespace Assessment
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <param name="type"></param>
         public void DeclareIdentifier(IToken identifier, int type)
         {
             if (!identifier.Is(Token.IdentifierToken))
                 return;
 
-            if (Scope.CurrentScope.IsDefined(identifier.TokenValue))
-                semanticError(new AlreadyDeclaredError(identifier, Scope.CurrentScope.Get(identifier.TokenValue)));
+            var symbols = Scope.CurrentScope;
+
+            if (symbols.IsDefined(identifier.TokenValue))
+                semanticError(new AlreadyDeclaredError(identifier, symbols.Get(identifier.TokenValue)));
             else
-                Scope.CurrentScope.Add(new VarSymbol(identifier, type));
+                symbols.Add(new VarSymbol(identifier, type));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public bool IsIdentifierDeclared(IToken identifier)
         {
             return Scope.CurrentScope.IsDefined(identifier.TokenValue);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public int GetIdentifierType(IToken identifier)
         {
             if (!IsIdentifierDeclared(identifier)) 
@@ -33,6 +50,11 @@ namespace Assessment
             return Scope.CurrentScope.Get(identifier.TokenValue).Type;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public int CheckIdentifier(IToken identifier)
         {
             if (!identifier.Is(Token.IdentifierToken))
@@ -47,12 +69,23 @@ namespace Assessment
             return Scope.CurrentScope.Get(identifier.TokenValue).Type;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="type"></param>
+        /// <param name="expected"></param>
         public void VerifyType(IToken token, int type, int expected)
         {
             if (type != expected)
                 semanticError(new TypeConflictError(token, type, expected));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="leftToken"></param>
+        /// <param name="rightToken"></param>
         public void CheckBooleanExpr(IToken leftToken, IToken rightToken)
         {
             if (leftToken.TokenType != PALType.ToString(LanguageType.Boolean) ||
