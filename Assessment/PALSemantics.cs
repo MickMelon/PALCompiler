@@ -1,4 +1,5 @@
 ﻿using AllanMilne.Ardkit;
+using System;
 
 namespace Assessment
 {
@@ -19,6 +20,19 @@ namespace Assessment
                 Scope.CurrentScope.Add(new VarSymbol(identifier, type));
         }
 
+        public bool IsIdentifierDeclared(IToken identifier)
+        {
+            return Scope.CurrentScope.IsDefined(identifier.TokenValue);
+        }
+
+        public int GetIdentifierType(IToken identifier)
+        {
+            if (!IsIdentifierDeclared(identifier)) 
+                return LanguageType.Undefined;
+
+            return Scope.CurrentScope.Get(identifier.TokenValue).Type;
+        }
+
         public int CheckIdentifier(IToken identifier)
         {
             if (!identifier.Is(Token.IdentifierToken))
@@ -37,6 +51,16 @@ namespace Assessment
         {
             if (type != expected)
                 semanticError(new TypeConflictError(token, type, expected));
+        }
+
+        public void CheckBooleanExpr(IToken leftToken, IToken rightToken)
+        {
+            if (leftToken.TokenType != PALType.ToString(LanguageType.Boolean) ||
+                rightToken.TokenType != PALType.ToString(LanguageType.Boolean))
+            {
+             //   semanticError(new TypeConflictError(leftToken, , LanguageType.Boolean));
+
+            }
         }
     }
 }

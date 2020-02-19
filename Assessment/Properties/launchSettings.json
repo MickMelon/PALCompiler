@@ -2,7 +2,7 @@
   "profiles": {
     "Assessment": {
       "commandName": "Project",
-      "commandLineArgs": "G:\\_Compilers\\CompilersProject\\Assessment\\Programs\\syntax-errors\\rvalueAssignment.txt"
+      "commandLineArgs": "G:\\_Compilers\\CompilersProject\\Assessment\\Programs\\semantic-errors\\bracket.txt"
     }
   }
 }

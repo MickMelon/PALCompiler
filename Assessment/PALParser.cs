@@ -1,6 +1,7 @@
 ﻿using AllanMilne.Ardkit;
 using Assessment.Errors;
 using Assessment.Errors.Syntax;
+using System;
 using System.Collections.Generic;
 
 namespace Assessment
@@ -39,6 +40,7 @@ namespace Assessment
                 RecStatements();
 
             mustBe("END");
+            mustBe(Token.EndOfFile);
 
             Scope.CloseScope();
         }
@@ -187,7 +189,7 @@ namespace Assessment
         /// </summary>
         private void RecAssignment()
         {
-            var type = semantics.CheckIdentifier(scanner.CurrentToken);
+            semantics.CheckIdentifier(scanner.CurrentToken);
             mustBe(Token.IdentifierToken);
             mustBe("=");
             RecExpression();
@@ -267,7 +269,7 @@ namespace Assessment
         /// </summary>
         private void RecBooleanExpr()
         {
-            RecExpression();
+            var leftType = RecExpression();
 
             if (have("<"))
                 mustBe("<");
@@ -278,7 +280,7 @@ namespace Assessment
             else
                 syntaxError(new InvalidBooleanExprError(scanner.CurrentToken));
 
-            RecExpression();
+            var rightType = RecExpression();
         }
 
         /// <summary>
@@ -288,23 +290,24 @@ namespace Assessment
         /// </summary>
         private int RecExpression()
         {
-            int leftType, rightType;
-            IToken leftToken, rightToken;
+            // i need to get the left type
+            // then make sure all other types after are the same
 
-            leftToken = scanner.CurrentToken;
+            int leftType, rightType;
+
             leftType = RecTerm();
 
             while (have("+") || have("-"))
             {
+                var operation = scanner.CurrentToken;
+
                 if (have("+"))
                     mustBe("+");
                 else
                     mustBe("-");
 
-                rightToken = scanner.CurrentToken;
                 rightType = RecTerm();
-
-                semantics.VerifyType(rightToken, rightType, leftType);
+                semantics.VerifyType(operation, rightType, leftType);
             }
 
             return leftType;
@@ -318,25 +321,21 @@ namespace Assessment
         private int RecTerm()
         {
             int leftType, rightType;
-            IToken token;
+
             leftType = RecFactor();
             
             while (have("*") || have("/"))
             {
-                if (have("*"))
-                {
-                    mustBe("*");
-                    token = scanner.CurrentToken;
-                    rightType = RecFactor();
-                }
-                else
-                {
-                    mustBe("/");
-                    token = scanner.CurrentToken;
-                    rightType = RecFactor();
-                }
+                var operation = scanner.CurrentToken;
 
-                semantics.VerifyType(token, leftType, rightType);
+                if (have("*"))
+                    mustBe("*");
+                else
+                    mustBe("/");
+
+                // rightToken might be "("
+                rightType = RecFactor();
+                semantics.VerifyType(operation, rightType, leftType);
             }
 
             return leftType;
@@ -381,21 +380,22 @@ namespace Assessment
         {
             if (have(Token.IdentifierToken))
             {
-                int type = semantics.CheckIdentifier(scanner.CurrentToken);
+                var type = semantics.CheckIdentifier(scanner.CurrentToken);
                 mustBe(Token.IdentifierToken);
                 return type;
             }
 
             if (have(Token.IntegerToken))
             {
+                semantics.CheckIdentifier(scanner.CurrentToken);
                 mustBe(Token.IntegerToken);
                 return LanguageType.Integer;
-            }
-                
+            }                
             
             if (have(Token.RealToken))
             {
-                mustBe(Token.RealToken);
+                semantics.CheckIdentifier(scanner.CurrentToken);
+                mustBe(Token.RealToken);                
                 return LanguageType.Real;
             }
 
