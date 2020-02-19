@@ -271,6 +271,7 @@ namespace Assessment
         /// </summary>
         private void RecBooleanExpr()
         {
+            var leftToken = scanner.CurrentToken;
             var leftType = RecExpression();
 
             if (have("<"))
@@ -283,6 +284,8 @@ namespace Assessment
                 syntaxError(new InvalidBooleanExprError(scanner.CurrentToken));
 
             var rightType = RecExpression();
+
+            semantics.VerifyType(leftToken, leftType, rightType);
         }
 
         /// <summary>
