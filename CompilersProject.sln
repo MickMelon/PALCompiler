@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountLets", "CountLets\Coun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossReferenceIdentifiers", "CrossReferenceIdentifiers\CrossReferenceIdentifiers.csproj", "{DAFBFF57-C7B4-4B58-AC3C-51A1B05F54A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assessment", "Assessment\Assessment.csproj", "{E7695B92-804C-48DC-A6A5-8A24D489E3E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assessment", "Assessment\Assessment.csproj", "{E7695B92-804C-48DC-A6A5-8A24D489E3E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assessment.Test", "Assessment.Test\Assessment.Test.csproj", "{94865C9C-6E72-4F57-8A12-2B5E1E6F148E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{E7695B92-804C-48DC-A6A5-8A24D489E3E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7695B92-804C-48DC-A6A5-8A24D489E3E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7695B92-804C-48DC-A6A5-8A24D489E3E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94865C9C-6E72-4F57-8A12-2B5E1E6F148E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94865C9C-6E72-4F57-8A12-2B5E1E6F148E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94865C9C-6E72-4F57-8A12-2B5E1E6F148E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94865C9C-6E72-4F57-8A12-2B5E1E6F148E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

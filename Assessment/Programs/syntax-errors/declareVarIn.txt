@@ -1,0 +1,7 @@
+﻿PROGRAM Factorial 
+WITH i, n, factorial AS INTEGER
+IN
+    WITH f, t AS INTEGER
+    t = i + n - f * t
+    OUTPUT t
+END

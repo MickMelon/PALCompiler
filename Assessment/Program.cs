@@ -14,6 +14,11 @@ namespace Assessment
             }
 
             var fileName = args[0];
+            Start(fileName);
+        }
+
+        public static void Start(string fileName)
+        {
             StreamReader streamReader;
             try
             {
@@ -27,7 +32,6 @@ namespace Assessment
 
             var parser = new PALParser(new PALScanner());
             parser.Parse(streamReader);
-
             parser.Errors.ForEach(e => Console.WriteLine(e.ToString()));
         }
     }

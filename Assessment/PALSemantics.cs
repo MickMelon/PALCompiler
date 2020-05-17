@@ -91,7 +91,7 @@ namespace Assessment
             if (leftToken.TokenType != PALType.ToString(LanguageType.Boolean) ||
                 rightToken.TokenType != PALType.ToString(LanguageType.Boolean))
             {
-             //   semanticError(new TypeConflictError(leftToken, , LanguageType.Boolean));
+                semanticError(new TypeConflictError(leftToken, , LanguageType.Boolean));
 
             }
         }

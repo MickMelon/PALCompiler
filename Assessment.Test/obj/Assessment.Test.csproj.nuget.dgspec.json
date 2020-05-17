@@ -1,0 +1,136 @@
+{
+  "format": 1,
+  "restore": {
+    "G:\\_Compilers\\CompilersProject\\Assessment.Test\\Assessment.Test.csproj": {}
+  },
+  "projects": {
+    "G:\\_Compilers\\CompilersProject\\Assessment.Test\\Assessment.Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "G:\\_Compilers\\CompilersProject\\Assessment.Test\\Assessment.Test.csproj",
+        "projectName": "Assessment.Test",
+        "projectPath": "G:\\_Compilers\\CompilersProject\\Assessment.Test\\Assessment.Test.csproj",
+        "packagesPath": "C:\\Users\\Michael\\.nuget\\packages\\",
+        "outputPath": "G:\\_Compilers\\CompilersProject\\Assessment.Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Michael\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "G:\\_Compilers\\CompilersProject\\Assessment\\Assessment.csproj": {
+                "projectPath": "G:\\_Compilers\\CompilersProject\\Assessment\\Assessment.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.2.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.15.1, )"
+            },
+            "nunit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "G:\\_Compilers\\CompilersProject\\Assessment\\Assessment.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "G:\\_Compilers\\CompilersProject\\Assessment\\Assessment.csproj",
+        "projectName": "Assessment",
+        "projectPath": "G:\\_Compilers\\CompilersProject\\Assessment\\Assessment.csproj",
+        "packagesPath": "C:\\Users\\Michael\\.nuget\\packages\\",
+        "outputPath": "G:\\_Compilers\\CompilersProject\\Assessment\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Michael\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

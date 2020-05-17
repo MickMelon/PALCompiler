@@ -1,0 +1,13 @@
+﻿PROGRAM UnaryOperators
+WITH
+    a, b AS INTEGER
+IN
+    a = 5 + +5
+    b = -a * -1
+    IF -a * -1 + b / 43 + 5 + -5 + +5 = 10 THEN
+        a = a + b
+    ELSE
+        a = a - b
+    ENDIF
+    OUTPUT a / -5
+END
